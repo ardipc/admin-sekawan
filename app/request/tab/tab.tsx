@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Admin from "./admin";
 import Member from "./member";
+import { User } from "@supabase/supabase-js";
 
-export default function Tab() {
+export default function Tab({user}: {user: User}) {
   const [activeTab, setActiveTab] = useState(0);
   const tabs = [
     { title: 'List', link: '/users/tab/admin' },
@@ -20,7 +21,7 @@ export default function Tab() {
         }
       </div>
       {activeTab === 0 && <Admin />}
-      {activeTab === 1 && <Member />}
+      {activeTab === 1 && <Member user={user} />}
     </>
   )
 }

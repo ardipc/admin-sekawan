@@ -82,9 +82,9 @@ export default function Admin(){
                                     </label>
                                 </th>
                                 <th className="text-primary font-bold text-sm w-10">ID</th>
-                                <th className="text-primary font-bold text-sm">Plat</th>
-                                <th className="text-primary font-bold text-sm">Owner</th>
-                                <th className="text-primary font-bold text-sm">Type</th>
+                                <th className="text-primary font-bold text-sm">Driver</th>
+                                <th className="text-primary font-bold text-sm">Vehicle</th>
+                                <th className="text-primary font-bold text-sm">Description</th>
                                 <th className="text-primary font-bold text-sm">Status</th>
                                 <th className="text-primary font-bold text-sm">Aksi</th>
                             </tr>
@@ -108,17 +108,20 @@ export default function Admin(){
                                             <td>{item.id}</td>
                                             <td>
                                                 <div onClick={() => showInfoUser(item)} className="text-sm cursor-pointer text-primary">
-                                                    {item.plat}
+                                                    {item.driver}
                                                 </div>
                                             </td>
-                                            <td>{item.kepemilikan}</td>
-                                            <td>{item.angkutan}</td>
+                                            <td>{item.sekawan_kendaraan.plat}</td>
+                                            <td>{item.deskripsi}</td>
                                             <td>
-                                                {item.status === "active" ? (
-                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">Active</div>
-                                                ) : (
-                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">Passive</div>
-                                                )}
+                                                {item.status === "approved" ? (
+                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">{item.status}</div>
+                                                ) : item.status === "requested" ? (
+                                                    <div className="bg-warning/10 p-2 border-2 border-primary text-xs text-center text-primary">{item.status}</div>
+                                                ) : item.status === "rejected" ? (
+                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">{item.status}</div>
+                                                ) : <div className="bg-info/10 p-2 border-2 border-primary text-xs text-center text-primary">{item.status}</div>
+                                            }
                                             </td>
                                             <td>
                                                 <div className="flex gap-2">

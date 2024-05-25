@@ -2,6 +2,7 @@
 
 import { supadmin } from "@/libs/supadmin";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,12 +12,12 @@ const skema = z.object({
   deskripsi: z.string(),
   kendaraan_id: z.preprocess(v => Number(v), z.number()),
   manager: z.string().email(),
-  upper: z.preprocess(v => String(v), z.string()).optional(),
+  upper: z.preprocess(v => { return v === null ? "" : String(v)}, z.string()).optional(),
 })
 
 type Skema = z.infer<typeof skema>;
 
-export default function Admin() {
+export default function Admin({ user }: { user: User; }) {
 
   const supa = supadmin();
 
@@ -36,6 +37,7 @@ export default function Admin() {
   const [managers, setManagers] = useState<any[]|null>([]);
 
   const [upper, setUpper] = useState<string>("");
+  const [message, setMessage] = useState<string>("NONE");
 
   const fetchData = async () => {
     const { data: ve } = await supa.from("sekawan_kendaraan").select().eq('status', 'passive');
@@ -64,9 +66,41 @@ export default function Admin() {
 
   const onSubmit: SubmitHandler<Skema> = async (data) => {
     console.log("data", data);
-  }
+    // 1. insert into request
+    const insert = await supa.from('sekawan_request').insert({
+      driver: data.driver,
+      deskripsi: data.deskripsi,
+      kendaraan_id: data.kendaraan_id,
+      status: "requested"
+    }).select();
 
-  console.log("data", errors)
+    // 2. insert into approval level 1
+    const approval = await supa.from('sekawan_request_approvals').insert({
+      email: data.manager,
+      request_id: insert.data?.length ? insert.data[0].id : 0,
+    })
+
+    // 3. insert into approval level 2
+    if (data.upper && data.upper.length > 0) {
+      const approval = await supa.from('sekawan_request_approvals').insert({
+        email: data.upper,
+        request_id: insert.data?.length ? insert.data[0].id : 0,
+      })
+    }
+
+    // 4. insert into log
+    const log = await supa.from('sekawan_request_log').insert({
+      actor: user.email,
+      request_id: insert.data?.length ? insert.data[0].id : 0,
+      tipe: 'request',
+      deskripsi: `Requesting vehicle #${data.kendaraan_id} for driver ${data.driver} with the purpose is ${data.deskripsi}`
+    })
+    
+    if(log.status === 201) {
+      reset();
+      setMessage('SUCCESS');
+    }
+  }
 
   return (
     <>
@@ -125,9 +159,7 @@ export default function Admin() {
               upper && upper.length > 0 ?
               <div className="flex items-center">
                 <label htmlFor="name" className="inline-block w-40 mr-6 text-right font-bold text-gray-600">Level 2</label>
-                <select {...register('upper')} className="select select-bordered w-full">
-                  <option value={upper}>{upper}</option>
-                </select>
+                <input {...register('upper')} className="input input-bordered w-full bg-slate-100" readOnly />
               </div>
             : null }
 
@@ -136,7 +168,7 @@ export default function Admin() {
           
           <div className="flex mt-2">
             <div className="w-36"></div>
-            <button className="btn btn-primary">Submit Request</button>
+            <button className="btn btn-primary" disabled={message === 'SUCCESS'}>{message === 'SUCCESS' ? 'Request Saved' : 'Submit Request'}</button>
           </div>
         </form>
         

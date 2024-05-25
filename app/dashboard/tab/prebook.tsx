@@ -104,9 +104,9 @@ export default function PreBook() {
                       <td>
                         <div className="text-sm">{item.name}</div>
                       </td>
-                      <td>{item.events_eo.length > 0 ? item.events_eo[0].eo_name : ""}</td>
-                      <td>{moment(item.start_date).format('DD MMMM YYYY')}</td>
-                      <td>{item.event_type}</td>
+                      <td>{""}</td>
+                      <td>{''}</td>
+                      <td>{''}</td>
                     </tr>
                   ))
               }

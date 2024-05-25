@@ -494,7 +494,7 @@ export type Database = {
         Insert: {
           created_at?: string
           deskripsi?: string | null
-          driver?: number | null
+          driver?: string | null
           id?: number
           kendaraan_id?: number | null
           status?: string | null
