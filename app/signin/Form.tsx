@@ -33,13 +33,7 @@ export default function Form() {
       password: data.password,
     })
     if(login.data.user) {
-      if(login.data.user.user_metadata.role === "Administrator") {
-        router.push('/')
-      } else {
-        await supabase.auth.signOut();
-        // @ts-ignore
-        window.modal_only_administator.showModal();
-      }
+      router.push('/')
       router.refresh()
     } else {
       setView('bad-credential');

@@ -1,18 +1,9 @@
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect, useState } from "react";
 import Tab from "./tab/tab";
 import {Line} from 'react-chartjs-2';
 import { supadmin } from "@/libs/supadmin";
-
-const graph = {
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  datasets: [{
-    data: [182, 300, 208, 316, 114, 320, 408, 420, 389],
-    borderWidth: 1
-  }]
-}
 
 export default function Content() {
   const supa = supadmin();
@@ -27,23 +18,19 @@ export default function Content() {
 
   const fetchStats = async () => {
       setIsLoad(true);
-      const pre = await supa.from("events")
+      const pre = await supa.from("sekawan_employees")
         .select()
-        .eq('content', '0')
-        .eq('tipe', 'pre')
         .order('id', { ascending: false });
       
-      const create = await supa.from("events")
+      const create = await supa.from("sekawan_kendaraan")
         .select()
-        .eq('content', '0')
-        .eq('tipe', 'create')
         .order('id', { ascending: false });
 
-      const tiket = await supa.from("bookings_user")
+      const tiket = await supa.from("sekawan_request")
         .select()
         .order('id', { ascending: false });
       
-      const news = await supa.from("news")
+      const news = await supa.from("sekawan_request_approvals")
         .select()
         .order('id', { ascending: false });
       
@@ -68,7 +55,7 @@ export default function Content() {
           <div className="w-1/4">
             <div className="bg-primary py-2.5 px-5 flex items-center gap-2.5">
               <img src="icons/newsicon.svg" alt="icon" />
-              <p className="font-bold text-white">News</p>
+              <p className="font-bold text-white">Request</p>
             </div>
             <div className="shadow-lg items-center py-5 px-5 flex gap-2.5">
               <p className="font-bold text-5xl">
@@ -76,13 +63,13 @@ export default function Content() {
                   isLoad ? <span className="loading loading-dots loading-md"></span> : stats.news
                 }
               </p>
-              <p className="font-medium">News Terunggah</p>
+              <p className="font-medium">Approval</p>
             </div>
           </div>
           <div className="w-1/4">
             <div className="bg-primary py-2.5 px-5 flex items-center gap-2.5">
               <img src="icons/ticketwhite.svg" alt="icon" />
-              <p className="font-bold text-white">Ticket</p>
+              <p className="font-bold text-white">Request</p>
             </div>
             <div className="shadow-lg items-center py-5 px-5 flex gap-2.5">
               <p className="font-bold text-5xl">
@@ -90,13 +77,13 @@ export default function Content() {
                   isLoad ? <span className="loading loading-dots loading-md"></span> : stats.tiket
                 }
               </p>
-              <p className="font-medium">Tiket Terjual</p>
+              <p className="font-medium">Ticket</p>
             </div>
           </div>
           <div className="w-1/4">
             <div className="bg-primary py-2.5 px-5 flex items-center gap-2.5">
               <img src="icons/newswhite.svg" alt="icon" />
-              <p className="font-bold text-white">Proposal</p>
+              <p className="font-bold text-white">Employees</p>
             </div>
             <div className="shadow-lg items-center py-5 px-5 flex gap-2.5">
               <p className="font-bold text-5xl">
@@ -104,13 +91,13 @@ export default function Content() {
                   isLoad ? <span className="loading loading-dots loading-md"></span> : stats.pre
                 }
               </p>
-              <p className="font-medium">Proposal Event</p>
+              <p className="font-medium">Employees</p>
             </div>
           </div>
           <div className="w-1/4">
             <div className="bg-primary py-2.5 px-5 flex items-center gap-2.5">
               <img src="icons/newswhite.svg" alt="icon" />
-              <p className="font-bold text-white">Post Event</p>
+              <p className="font-bold text-white">Vehicles</p>
             </div>
             <div className="shadow-lg items-center py-5 px-5 flex gap-2.5">
               <p className="font-bold text-5xl">
@@ -118,14 +105,14 @@ export default function Content() {
                   isLoad ? <span className="loading loading-dots loading-md"></span> : stats.event
                 }
               </p>
-              <p className="font-medium">Post Event</p>
+              <p className="font-medium">Vehicles</p>
             </div>
           </div>
         </div>
         <div className="flex justify-between mt-12">
           <div className="flex items-center gap-2">
             <img src="/icons/total-pasien.svg" alt="icon" />
-            <p className="text-3xl font-bold">Pengunjung Website</p>
+            <p className="text-3xl font-bold">Log Activities</p>
           </div>
           <select className="select select-bordered select-sm max-w-xs">
               <option disabled selected>Filter</option>
@@ -134,11 +121,6 @@ export default function Content() {
               <option>Las 1 Month</option>
               <option>Las 1 Year</option>
           </select>
-        </div>
-        <div className="chart">
-        {/* <Line
-          data={graph}
-        /> */}
         </div>
         <Tab />
       </div>

@@ -5,8 +5,10 @@ import { z } from "zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import Link from "next/link";
+import { supadmin } from "@/libs/supadmin";
 
 const validationSchema = z.object({
+  role: z.string().min(3, { message: "Role is required" }),
   name: z.string().min(3, { message: "Name is required" }),
   phone: z.string().min(3, { message: "Phone is required" }),
   password: z.string().min(8, { message: "Password is required" }),
@@ -26,7 +28,7 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function AdminForm() {
   
-  const supabase = createClientComponentClient();
+  const supabase = supadmin();
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState('register');
 
@@ -38,40 +40,31 @@ export default function AdminForm() {
     let meta: any = {
       phone: data.phone,
       name: data.name,
-      role: "Administrator"
+      role: data.role
     };
 
     setIsLoading(true);
-    await supabase.auth.signUp({
+    await supabase.auth.admin.createUser({
       email: data.email,
       password: data.password,
-      options: {
-        data: meta,
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
+      user_metadata: meta,
+      email_confirm: true
     });
-    setView(`check-email`);
+    setView('check-email');
     setIsLoading(false);
   }
 
   return (
     <form className="grid grid-cols-1 gap-3 mt-6" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label className="block text-sm text-gray-600 dark:text-gray-200">Name</label>
-        <input {...register('name')} type="text" placeholder="John Snow" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-        {errors.name && (
-          <p className="text-xs italic text-red-500 mt-2"> {errors.name?.message}
-          </p>
-        )}
+          <label className="block text-sm text-gray-600 dark:text-gray-200">Name</label>
+          <input {...register('name')} type="text" placeholder="John Snow" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+          {errors.name && (
+            <p className="text-xs italic text-red-500 mt-2"> {errors.name?.message}
+            </p>
+          )}
       </div>
-      <div>
-        <label className="block text-sm text-gray-600 dark:text-gray-200">Phone</label>
-        <input {...register('phone')} type="text" placeholder="Enter" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-        {errors.phone && (
-          <p className="text-xs italic text-red-500 mt-2"> {errors.phone?.message}
-          </p>
-        )}
-      </div>
+      
       <div>
         <label className="block text-sm text-gray-600 dark:text-gray-200">Email</label>
         <input {...register('email')} type="email" placeholder="johnsnow@example.com" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
@@ -80,23 +73,48 @@ export default function AdminForm() {
           </p>
         )}
       </div>
-      <div>
-        <label className="block text-sm text-gray-600 dark:text-gray-200">Password</label>
-        <input {...register('password')} type="password" placeholder="Enter your password" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-        {errors.password && (
-            <p className="text-xs italic text-red-500 mt-2">
-              {errors.password?.message}
+      <div className="flex justify-between gap-6">
+        <div className="w-full">
+          <label className="block text-sm text-gray-600 dark:text-gray-200">Role</label>
+          <select {...register('role')} className="select select-bordered w-full">
+            <option value="admin">Admin</option>
+            <option value="driver">Driver</option>
+            <option value="manager">Manager</option>
+          </select>
+          {errors.name && (
+            <p className="text-xs italic text-red-500 mt-2"> {errors.name?.message}
             </p>
           )}
+        </div>
+        <div className="w-full">
+          <label className="block text-sm text-gray-600 dark:text-gray-200">Phone</label>
+          <input {...register('phone')} type="text" placeholder="Enter" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+          {errors.phone && (
+            <p className="text-xs italic text-red-500 mt-2"> {errors.phone?.message}
+            </p>
+          )}
+        </div>
       </div>
-      <div className="mb-1">
-        <label className="block text-sm text-gray-600 dark:text-gray-200">Confirm Password</label>
-        <input {...register('confirmPassword')} type="password" placeholder="Enter confirm password" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
-        {errors.confirmPassword && (
-            <p className="text-xs italic text-red-500 mt-2">
-              {errors.confirmPassword?.message}
-            </p>
-          )}
+      
+      <div className="flex justify-between gap-6">
+        <div className="w-full">
+          <label className="block text-sm text-gray-600 dark:text-gray-200">Password</label>
+          <input {...register('password')} type="password" placeholder="Enter your password" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+          {errors.password && (
+              <p className="text-xs italic text-red-500 mt-2">
+                {errors.password?.message}
+              </p>
+            )}
+        </div>
+        <div className="w-full">
+          <label className="block text-sm text-gray-600 dark:text-gray-200">Confirm Password</label>
+          <input {...register('confirmPassword')} type="password" placeholder="Enter confirm password" className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+          {errors.confirmPassword && (
+              <p className="text-xs italic text-red-500 mt-2">
+                {errors.confirmPassword?.message}
+              </p>
+            )}
+        </div>
       </div>
 
       <div className="mb-1">
@@ -120,7 +138,7 @@ export default function AdminForm() {
         view === 'check-email' &&
         <div className="alert alert-success">
           <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          <span>Check your mailbox to continue signing.</span>
+          <span>User successfully registered.</span>
         </div>
       }
       

@@ -11,6 +11,6 @@ export default async function Page(){
   }
 
   return (
-    <Beranda />
+    <Beranda user={user} />
   )
 }

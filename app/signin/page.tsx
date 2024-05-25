@@ -16,7 +16,7 @@ export default async function Page() {
   return (
     <section className="bg-white dark:bg-gray-900 w-full">
       <div className="flex justify-center min-h-screen">
-        <div className="hidden bg-cover lg:block lg:w-full" style={{backgroundImage: 'url("/images/sign-in-jis.png")'}}>
+        <div className="hidden bg-cover lg:block lg:w-full" style={{backgroundImage: 'url("/images/red1.png")'}}>
         </div>
         <div className="flex items-center w-full max-w-3xl p-8 mx-auto lg:px-12 lg:w-1/2">
           <div className="w-full">
@@ -27,8 +27,9 @@ export default async function Page() {
 
             <Form />
 
-            <div className="flex items-center mt-6">
+            <div className="flex justify-between items-center mt-6">
               <Link href={`/`} className="text-primary text-sm">Back to Home</Link>
+              <Link href={`/register`} className="text-primary text-sm">Register</Link>
             </div>
 
           </div>

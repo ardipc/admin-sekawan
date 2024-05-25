@@ -20,7 +20,7 @@ export default async function Layout({
         <input id="left-sidebar-drawer" type="checkbox" className="drawer-toggle" />
 
         <div className="drawer-content flex flex-col">
-          <Header />
+          <Header user={user} />
           {children}
         </div>
 

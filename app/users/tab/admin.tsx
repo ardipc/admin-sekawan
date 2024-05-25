@@ -21,7 +21,7 @@ export default function Admin(){
 
     const fetchUsers = async () => {
         setIsLoad(true);
-        const { users, error } = await useUser({ role: "Administrator" });
+        const { users, error } = await useUser({ role: "admin" });
         if(!error) setUsers(users);
         setIsLoad(false);
     }
@@ -52,7 +52,6 @@ export default function Admin(){
                         <img src="/icons/users.svg" alt="icon" />
                         <p className="text-3xl font-bold">All Admin</p>
                     </div>
-                    <BtnTambah fetchUsers={fetchUsers} />
                 </div>
                 <div className="flex justify-between my-6">
                     <div className="flex gap-2 items-center">

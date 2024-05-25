@@ -2,8 +2,8 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
-  title: 'ADMIN - JIS',
-  description: 'ADMIN JIS',
+  title: 'ADMIN - SEKAWAN',
+  description: 'ADMIN SEKAWAN',
 }
 
 export const dynamic = 'force-dynamic'

@@ -3,8 +3,9 @@
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Content from './dashboard/content';
+import { User } from '@supabase/supabase-js';
 
-export default function Beranda(){
+export default function Beranda({ user }: { user: User }){
 
   return (
     <>
@@ -12,7 +13,7 @@ export default function Beranda(){
         <input id="left-sidebar-drawer" type="checkbox" className="drawer-toggle" />
 
         <div className="drawer-content flex flex-col">
-          <Header />
+          <Header user={user} />
           <main className="flex-1 overflow-y-auto py-8 px-6 bg-red-100">
             <Content />
           </main>

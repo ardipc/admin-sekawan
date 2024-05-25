@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import DatePick from "../datepick";
-import { useUser } from "@/libs/hooks/useUser";
 import { User } from "@supabase/supabase-js";
 import { JsonView } from 'react-json-view-lite';
-import BtnTambah from "./add";
-import HapusButton from "./delete";
+import { useVehicles } from "@/libs/hooks/useVehicles";
+import { useRequest } from "@/libs/hooks/userRequest";
 
 export default function Admin(){
 
@@ -13,7 +12,7 @@ export default function Admin(){
     const [statusFilter, setStatusFilter] = useState("All");
 
     const [isLoad, setIsLoad] = useState(false);
-    const [users, setUsers] = useState<User[]>();
+    const [users, setUsers] = useState<any[]>();
 
     useEffect(() => {
         fetchUsers();
@@ -21,8 +20,8 @@ export default function Admin(){
 
     const fetchUsers = async () => {
         setIsLoad(true);
-        const { users, error } = await useUser({ role: "driver" });
-        if(!error) setUsers(users);
+        const { data, error } = await useRequest({ status: "all" });
+        if(!error) setUsers(data);
         setIsLoad(false);
     }
 
@@ -50,7 +49,7 @@ export default function Admin(){
                 <div className="flex justify-between">
                     <div className="flex gap-2 items-center">
                         <img src="/icons/users.svg" alt="icon" />
-                        <p className="text-3xl font-bold">All Driver</p>
+                        <p className="text-3xl font-bold">All Request</p>
                     </div>
                 </div>
                 <div className="flex justify-between my-6">
@@ -83,10 +82,9 @@ export default function Admin(){
                                     </label>
                                 </th>
                                 <th className="text-primary font-bold text-sm w-10">ID</th>
-                                <th className="text-primary font-bold text-sm">Nama Member</th>
-                                <th className="text-primary font-bold text-sm">Nomor HP</th>
-                                <th className="text-primary font-bold text-sm">Email</th>
-                                <th className="text-primary font-bold text-sm">Role</th>
+                                <th className="text-primary font-bold text-sm">Plat</th>
+                                <th className="text-primary font-bold text-sm">Owner</th>
+                                <th className="text-primary font-bold text-sm">Type</th>
                                 <th className="text-primary font-bold text-sm">Status</th>
                                 <th className="text-primary font-bold text-sm">Aksi</th>
                             </tr>
@@ -100,27 +98,26 @@ export default function Admin(){
                                         </td>
                                     </tr> 
                                     : 
-                                    users && users.map((item: User, index: any) => (
+                                    users && users.map((item: any, index: any) => (
                                         <tr key={`sdf-${index}`}>
                                             <th>
                                                 <label>
                                                     <input type="checkbox" className="checkbox checkbox-primary checkbox-xs rounded-sm" />
                                                 </label>
                                             </th>
-                                            <td>{index + 1}</td>
+                                            <td>{item.id}</td>
                                             <td>
                                                 <div onClick={() => showInfoUser(item)} className="text-sm cursor-pointer text-primary">
-                                                    {item.user_metadata.name}
+                                                    {item.plat}
                                                 </div>
                                             </td>
-                                            <td>{item.user_metadata.phone}</td>
-                                            <td>{item.email}</td>
-                                            <td>{item.user_metadata.role}</td>
+                                            <td>{item.kepemilikan}</td>
+                                            <td>{item.angkutan}</td>
                                             <td>
-                                                {item.confirmed_at ? (
-                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">Online</div>
+                                                {item.status === "active" ? (
+                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">Active</div>
                                                 ) : (
-                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">Offline</div>
+                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">Passive</div>
                                                 )}
                                             </td>
                                             <td>
@@ -129,7 +126,6 @@ export default function Admin(){
                                                         <img src="/icons/edit.svg" alt="icon" />
                                                         <p className="text-sm font-bold text-white">Edit</p>
                                                     </button>
-                                                    <HapusButton />
                                                 </div>
                                             </td>
                                         </tr>
