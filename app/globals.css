@@ -1,0 +1,66 @@
+/* Place in your CSS file at the top of the document */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.he-96 {
+  min-height: 96px;
+}
+
+.hero-title {
+  color: var(--neutral-n-1, #FFF);
+  text-align: center;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 62.4px */
+  letter-spacing: 0.25px;
+}
+
+.px-ku-32 {
+  padding-left: 32rem;
+  padding-right: 32rem;
+}
+
+.px-ku-26 {
+  padding-left: 29rem;
+  padding-right: 29rem;
+}
+
+.text-netral {
+  color: #828282;
+}
+
+.bg-status {
+  background: #FFF1EB;
+}
+
+.h-658{
+  height: 658px;
+}
+
+.font-82{
+  font-size: 82px;
+}
+
+.stroked-text {
+  -webkit-text-stroke: .2px #fff; /* Lebar dan warna stroke */
+}
+
+.text-stroke{
+  font-size: 64px;
+  font-weight: bold;
+  -webkit-text-stroke: .2px #AE171E; /* Lebar dan warna stroke */
+}
+
+.tab {
+  border-color: transparent; /* Set default border color */
+}
+
+.tab-active {
+  border-color: #AE171E!important; /* Set border color for active tab */
+  color: #AE171E!important;
+  font-weight: bold; 
+}
