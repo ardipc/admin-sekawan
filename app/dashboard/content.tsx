@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import Tab from "./tab/tab";
-import {Line} from 'react-chartjs-2';
 import { supadmin } from "@/libs/supadmin";
 
 export default function Content() {
@@ -122,7 +120,6 @@ export default function Content() {
               <option>Las 1 Year</option>
           </select>
         </div>
-        <Tab />
       </div>
     </>
   )
