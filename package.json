@@ -25,6 +25,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.2",
+    "react-json-to-csv": "^1.2.0",
     "react-json-view-lite": "^0.9.8",
     "react-quill": "^2.0.0",
     "react-select": "^5.7.7",

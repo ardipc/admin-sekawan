@@ -65,6 +65,9 @@ importers:
       react-hook-form:
         specifier: ^7.45.2
         version: 7.51.5(react@18.2.0)
+      react-json-to-csv:
+        specifier: ^1.2.0
+        version: 1.2.0
       react-json-view-lite:
         specifier: ^0.9.8
         version: 0.9.8(react@18.2.0)
@@ -1031,6 +1034,9 @@ packages:
   json-schema-traverse@1.0.0:
     resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
 
+  json-to-csv-export@2.1.0:
+    resolution: {integrity: sha512-xAkBf6f0uLqG7gtCuulqp6BtbIswYMiSTCJ2ctuh2w1W5XvQKywX4Ppkr5Tgm3JUHLgeOspli8zA9Hy494X5WA==}
+
   lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -1354,6 +1360,9 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  react-json-to-csv@1.2.0:
+    resolution: {integrity: sha512-4yBorgPrkRQDRpbTKDq5vXIb4+CYBorwFxbYyKddmTnFlUGQb/2EOyIrSq6Elp/ygYCVKJK2IwfhEYUaDVyCpw==}
 
   react-json-view-lite@0.9.8:
     resolution: {integrity: sha512-4D0UgQ5SjanNi2KzgEsEKOb9kj0L9HQz/3IshwIZN5reZsSU62t6sp8c+vskV42lXjGQCi7qGfoXIpNRsON7LA==}
@@ -2691,6 +2700,8 @@ snapshots:
 
   json-schema-traverse@1.0.0: {}
 
+  json-to-csv-export@2.1.0: {}
+
   lilconfig@2.1.0: {}
 
   lilconfig@3.1.1: {}
@@ -2977,6 +2988,10 @@ snapshots:
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
+
+  react-json-to-csv@1.2.0:
+    dependencies:
+      json-to-csv-export: 2.1.0
 
   react-json-view-lite@0.9.8(react@18.2.0):
     dependencies:

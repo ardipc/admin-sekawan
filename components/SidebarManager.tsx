@@ -12,22 +12,12 @@ export default function Sidebar() {
     {
       name: 'Dashboard',
       icon: (css: string) => <HomeIcon className={`h-6 w-6 ${css}`} />,
-      link: '/dashboard'
+      link: '/manager'
     },
     {
       name: 'Request',
       icon: (css: string) => <ArchiveBoxIcon className={`h-6 w-6 ${css}`} />,
-      link: '/request'
-    },
-    {
-      name: 'Vehicles',
-      icon: (css: string) => <DocumentTextIcon className={`h-6 w-6 ${css}`} />,
-      link: '/vehicles'
-    },
-    {
-      name: 'Users',
-      icon: (css: string) => <UsersIcon className={`h-6 w-6 ${css}`} />,
-      link: '/users'
+      link: '/manager/request'
     },
   ];
 
@@ -43,7 +33,7 @@ export default function Sidebar() {
         </button>
         {
           menus.map((item, index) => (
-            <li key={`index-${index}`}><Link href={item.link}>{item.icon(pathname.startsWith(item.link) ? 'text-primary' : 'text-gray-400')} &nbsp; {item.name}</Link></li>
+            <li key={`index-${index}`}><Link href={item.link}>{item.icon(pathname === item.link ? 'text-primary' : 'text-gray-400')} &nbsp; {item.name}</Link></li>
           ))
         }
       </ul>

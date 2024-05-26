@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import DatePick from "../datepick";
 import { User } from "@supabase/supabase-js";
 import { JsonView } from 'react-json-view-lite';
-import { useVehicles } from "@/libs/hooks/useVehicles";
 import { useRequest } from "@/libs/hooks/userRequest";
 import Link from "next/link";
+// @ts-ignore
+import CsvDownloadButton from 'react-json-to-csv'
 
 export default function Admin(){
 
@@ -63,7 +63,7 @@ export default function Admin(){
                         <p className="text-sm">Entries</p>
                     </div>
                     <div className="flex gap-4">
-                        <DatePick />
+                        <CsvDownloadButton className="btn btn-sm btn-primary" data={users} />
                         <select className="select select-bordered select-sm max-w-xs" onChange={handleStatusFilterChange} value={statusFilter}>
                             <option value={"All"}>All</option>
                             <option value={"1"}>Active</option>

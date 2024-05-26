@@ -4,6 +4,7 @@ import moment from "moment";
 import { cookies } from "next/headers"; 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import ActionManagerButton from "./action";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -11,14 +12,20 @@ export default async function Page({ params }: { params: { id: string } }) {
   if(!user) {
     redirect(`/signin`);
   }
-
-  const { data } = await supabase.from('sekawan_request').select('*, sekawan_kendaraan(*), sekawan_employees(*), sekawan_request_approvals(*), sekawan_request_log(*)').eq('id', params.id).single();
+  const { data: approval } = await supabase.from("sekawan_request_approvals").select('*, sekawan_request(*)').eq('id', params.id).single();
+  const { data } = await supabase.from('sekawan_request').select('*, sekawan_kendaraan(*), sekawan_employees(*), sekawan_request_approvals(*), sekawan_request_log(*)').eq('id', approval?.request_id || 0).single();
   if (data === null) {
     redirect('/request');
   }
 
-  const { data: approvals } = await supabase.from('sekawan_request_approvals').select('*').eq('request_id', params.id || 0).order('id', { ascending: true });
+  if (approval?.email !== user.email) {
+    redirect('/manager/request')
+  }
+
+  const { data: approvals } = await supabase.from('sekawan_request_approvals').select('*').eq('request_id', approval?.request_id || 0).order('id', { ascending: true });
   const approvedLength = data.sekawan_request_approvals.filter(r => r.approved === true).length;
+
+  const { data: logs } = await supabase.from('sekawan_request_log').select('*').eq('request_id', approval?.request_id || 0).order('id', { ascending: false });
 
   return (
     <main className="flex-1 overflow-y-auto py-8 px-6 bg-red-100">
@@ -26,8 +33,9 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className="content p-6">
           <div className="flex justify-between">
               <div className="flex gap-2 items-center">
-                  <Link href={`/request`}><img src="/icons/back.svg" alt="icon" /></Link>
+                  <Link href={`/manager/request`}><img src="/icons/back.svg" alt="icon" /></Link>
                   <p className="text-3xl font-bold">Request #{params.id}</p>
+                  <p className="ms-6"><b className="border rounded-xl bg-warning px-2 py-1">{data.status}</b></p>
               </div>
           </div>
 
@@ -71,6 +79,13 @@ export default async function Page({ params }: { params: { id: string } }) {
               }
               <li className={`step ${data.sekawan_request_approvals.length === approvedLength ? 'step-success' : ''}`}>{data.sekawan_request_approvals.length === approvedLength ? 'Approved' : '-'}</li>
             </ul>
+
+          </div>
+
+          <hr className="my-6" />
+          <h3 className="font-bold text-xl mb-3">Your Action</h3>
+          <div className="action">
+            <ActionManagerButton approval={approval} email={user.email || ''} requestId={data.id} />
           </div>
 
           <hr className="my-6" />
@@ -78,7 +93,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="w-1/2">
             <ul className="timeline timeline-vertical">
             {
-              data?.sekawan_request_log && data.sekawan_request_log.reverse().map((item: any, index: number) => (
+              logs && logs.map((item: any, index: number) => (
                 <li key={index}>
                   <hr/>
                   <div className="timeline-start">{moment(item.created_at).format('LLL')}</div>
@@ -87,7 +102,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                   </div>
                   <div className="timeline-end timeline-box">{item.deskripsi}</div>
                   {
-                    index === 0 ? <hr /> : null
+                    index === 0 || index === 1 ? <hr /> : null
                   }
                 </li>
               ))
