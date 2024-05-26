@@ -1,48 +1,64 @@
-# Supabase Starter
 
-This starter configures Supabase Auth to use cookies, making the user's session available throughout the entire Next.js app - Client Components, Server Components, Route Handlers, Server Actions and Middleware.
+# SEKAWAN PERMINTAAN KENDARAAN
 
-## Deploy your own
+Aplikasi Pemesanan Kendaraan
 
-The Vercel deployment will guide you through creating a Supabase account and project. After installation of the Supabase integration, all relevant environment variables will be set up so that the project is usable immediately after deployment 🚀
+## Demo Aplikasi
+https://admin-sekawan.vercel.app
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&integration-ids=oac_jUduyjQgOyzev1fjrW83NYOv)
+## Screenshot
+![Dashboard](https://admin-sekawan.vercel.app/images/dashboard.png)
+![Login](https://admin-sekawan.vercel.app/images/login.png)
+![Request](https://admin-sekawan.vercel.app/images/request.png)
 
-## How to use
+## Users
+| email                  | password   | role   |
+|------------------------|------------|--------|
+| admin.1@sekawan.id     | admin123   | admin  |
+| admin.2@sekawan.id     | admin123   | admin  |
+| driver.1@sekawan.id    | driver123  | driver |
+| driver.2@sekawan.id    | driver123  | driver |
+| driver.3@sekawan.id    | driver123  | driver |
+| driver.4@sekawan.id    | driver123  | driver |
+| manager.1@sekawan.id   | manager123 | admin  |
+| manager.2@sekawan.id   | manager123 | admin  |
+| manager.1.1@sekawan.id | manager123 | admin  |
+| manager.3@sekawan.id   | manager123 | admin  |
+| manager.3.1@sekawan.id | manager123 | admin  |
 
-1. Create a [new Supabase project](https://database.new)
-1. Run `npx create-next-app -e with-supabase` to create a Next.js app using the Supabase Starter template
-1. Use `cd` to change into the app's directory
-1. Run `npm install` to install dependencies
-1. Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
-1. Run `npm run dev` to start the local development server
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+## ERD
 
-### Create a Supabase client
+![App Screenshot](https://admin-sekawan.vercel.app/images/erd.png)
 
-Check out the [`/app/_examples`](./app/_examples/) folder for an example of creating a Supabase client in:
 
-- [Client Components](./app/_examples/client-component/page.tsx)
-- [Server Components](./app/_examples/server-component/page.tsx)
-- [Route Handlers](./app/_examples/route-handler/route.ts)
-- [Server Actions](./app/_examples/server-action/page.tsx)
+## Fitur
+### Role Admin
+1. Request kendaraan dan driver
+2. Manage kendaraan
+3. Manage user
+4. Log request
 
-### Create `todo` table and seed with data (optional)
+### Role Driver
+1. Input history BBM
+2. Input history pemakaian
+3. Input history service
 
-Navigate to [your project's SQL Editor](https://app.supabase.com/project/_/sql), click `New query`, paste the contents of the [init.sql](./supabase/migrations/20230618024722_init.sql) file and click `RUN`.
+### Role Manager
+1. Approve/Reject request
+2. Detail request 
 
-This will create a basic `todos` table, enable Row Level Security (RLS), and write RLS policies enabling `select` and `insert` actions for `authenticated` users.
+## Workflow
+1. User admin membuat request kendaraan dengan memilih kendaraan dan drivernya
+2. User admin memilih approvalnya, apabila manager mempunyai manager lagi diatasnya akan secara otomatis ditampilkan
+3. User manager melihat request yang membutuhkan aksi approval berdasarkan emailnya
+4. User admin melihat kembali request yang telah di approve/reject
 
-To seed your `todos` table with some dummy data, run the contents of the [seed.sql](./supabase/seed.sql) file.
+## Tech Stack
 
-## Feedback and issues
+**Client:** Next.js, React, TailwindCSS, Supabase
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+**Server:** Node, Express
 
-## More Supabase examples
+**Database:** PostgreSQL
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
-- [Next.js Auth Helpers Docs](https://supabase.com/docs/guides/auth/auth-helpers/nextjs)
