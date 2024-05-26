@@ -6,6 +6,9 @@ Aplikasi Pemesanan Kendaraan
 ## Demo Aplikasi
 https://admin-sekawan.vercel.app
 
+## Git
+https://github.com/ardipc/admin-sekawan
+
 ## Screenshot
 ![Dashboard](https://admin-sekawan.vercel.app/images/dashboard.png)
 ![Login](https://admin-sekawan.vercel.app/images/login.png)
