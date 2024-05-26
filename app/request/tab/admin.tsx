@@ -5,6 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { JsonView } from 'react-json-view-lite';
 import { useVehicles } from "@/libs/hooks/useVehicles";
 import { useRequest } from "@/libs/hooks/userRequest";
+import Link from "next/link";
 
 export default function Admin(){
 
@@ -107,9 +108,9 @@ export default function Admin(){
                                             </th>
                                             <td>{item.id}</td>
                                             <td>
-                                                <div onClick={() => showInfoUser(item)} className="text-sm cursor-pointer text-primary">
+                                                <Link href={`/request/${item.id}`} className="text-sm cursor-pointer text-primary">
                                                     {item.driver}
-                                                </div>
+                                                </Link>
                                             </td>
                                             <td>{item.sekawan_kendaraan.plat}</td>
                                             <td>{item.deskripsi}</td>

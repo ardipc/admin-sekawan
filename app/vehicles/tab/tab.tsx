@@ -12,7 +12,7 @@ export default function Tab() {
 
   return (
     <>
-      <div className="tabs">
+      <div className="tabs tabs-bordered">
         {
           tabs.map((item, index) => (
             <a onClick={() => setActiveTab(index)} key={`item-${index}`} className={`tab tab-lg tab-bordered text-sm font-bold ${index === activeTab ? 'tab-active' : ''}`}>{item.title}</a>

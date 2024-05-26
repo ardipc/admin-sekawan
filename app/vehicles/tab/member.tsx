@@ -4,6 +4,7 @@ import DatePick from "../datepick";
 import { User } from "@supabase/supabase-js";
 import { JsonView } from 'react-json-view-lite';
 import { useVehicles } from "@/libs/hooks/useVehicles";
+import Link from "next/link";
 
 export default function Admin(){
 
@@ -106,17 +107,17 @@ export default function Admin(){
                                             </th>
                                             <td>{item.id}</td>
                                             <td>
-                                                <div onClick={() => showInfoUser(item)} className="text-sm cursor-pointer text-primary">
+                                                <Link href={`/vehicles/${item.id}`} className="text-sm cursor-pointer text-primary">
                                                     {item.plat}
-                                                </div>
+                                                </Link>
                                             </td>
                                             <td>{item.kepemilikan}</td>
                                             <td>{item.angkutan}</td>
                                             <td>
-                                                {item.status === "active" ? (
-                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">Active</div>
+                                                {item.status === "passive" ? (
+                                                    <div className="bg-success/10 p-2 border-2 border-success text-xs text-center text-primary">Idle</div>
                                                 ) : (
-                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">Passive</div>
+                                                    <div className="bg-primary/10 p-2 border-2 border-primary text-xs text-center text-primary">Used</div>
                                                 )}
                                             </td>
                                             <td>
